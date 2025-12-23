@@ -1,27 +1,24 @@
 package simulator;
 import java.util.MissingFormatArgumentException;
 import java.util.OptionalDouble;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
 
-public class Channel {
-    private OptionalDouble contents;
+public class Channel<T extends Number> {
+    private T contents;
 
     public Channel() {
-         contents = OptionalDouble.empty();
+         contents = null;
     }
 
-    public double readOut(){
-        if (contents.isPresent()){
-            return contents.getAsDouble();
-        } else {
-            throw new MissingFormatArgumentException("Trying to read an empty channel");
-        }
+    public boolean hasValue(){
+        return contents == null;
     }
 
-    public void writeIn(double val){
-        if (contents.isEmpty()) {
-            contents = OptionalDouble.of(val);
-        } else {
-            throw new MissingFormatArgumentException("Trying to write into a full channel");
-        }
+    public T readOut(){
+        T retVal = contents;
+        contents = null;
+        return retVal;
     }
+
 }

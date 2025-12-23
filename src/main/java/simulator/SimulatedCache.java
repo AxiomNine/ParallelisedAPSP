@@ -2,6 +2,8 @@ package simulator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -9,6 +11,8 @@ public class SimulatedCache {
 
     private Double[][] adjacencyMatrix;
     private Path[][] iteratedMatrix;
+
+    private int size;
 
     public SimulatedCache(String fileAddress) {
         File sourceFile = new File(fileAddress);
@@ -22,12 +26,16 @@ public class SimulatedCache {
                 nodeRight.add(Integer.valueOf(linkInfo[2]));
                 cost.add(Double.valueOf(linkInfo[3]));
             }
-            int width = cost.size();
-            this.adjacencyMatrix = new Double[width][width];
-            iteratedMatrix = new Path[width][width];
-            for (int i = 0; i < width; i++) {
-                adjacencyMatrix[nodeLeft.pop()][nodeRight.pop()] = cost.pop();
-                for (int j = 0; j < width; j++) {
+            size = cost.size();
+            adjacencyMatrix = new Double[size][size];
+            iteratedMatrix = new Path[size][size];
+            for (int i = 0; i < size; i++) {
+                Integer l = nodeLeft.pop();
+                Integer r = nodeRight.pop();
+                Double c = cost.pop();
+                adjacencyMatrix[l][r] = c;
+                adjacencyMatrix[r][l] = c;
+                for (int j = 0; j < size; j++) {
                     Path p = new Path();
                     if (i == j) {
                         p.appendToPath(0.0, i);
@@ -42,11 +50,39 @@ public class SimulatedCache {
             e.printStackTrace();
         }
     }
-    Double readVal(int col, int row){
+    public Double readVal(int col, int row){
         return adjacencyMatrix[row][col];
     }
 
-    void writeVal(int col, int row, Double val) {
-        adjacencyMatrix[row][col] = val;
+    public void writeVal(int col, int row, Path p) {
+        iteratedMatrix[row][col] = p;
+    }
+
+    public HashMap<Integer, Double> getNeighboursAndPaths(int from){
+        HashMap<Integer, Double> neighbours = new HashMap<Integer, Double>();
+        int v = 0;
+        for (Double d : adjacencyMatrix[from]) {
+            if (d != null) {
+                neighbours.put(v, d);
+            }
+            v++;
+        }
+        return neighbours;
+    }
+
+    public Path getCurrentPath(int from, int to){
+        return iteratedMatrix[from][to];
+    }
+
+    public void printAllPaths(int row){
+        System.out.println("FROM: " + row);
+        for (Path p : iteratedMatrix[row]) {
+            System.out.print("TO: " + p.getHead() + " - ");
+                p.print();
+        }
+    }
+
+    public int getSize(){
+        return size;
     }
 }

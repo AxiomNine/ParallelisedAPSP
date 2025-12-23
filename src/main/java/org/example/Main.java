@@ -13,13 +13,14 @@ public class Main {
         MainCore mainCore;
         switch(args[0]){
             case "D":
-                mainCore = new DijkstraMainCore("fileAddress", 4);
+                mainCore = new DijkstraMainCore("C:\\Users\\Daniel\\Documents\\ParallelProject\\ParallelisedAPSP\\src\\main\\resources\\basic_graph.txt", Integer.parseInt(args[1]));
                 break;
             case "F":
-                mainCore = new FoxMainCore("fileAddress", 4);
+                mainCore = new FoxMainCore("C:\\Users\\Daniel\\Documents\\ParallelProject\\ParallelisedAPSP\\src\\main\\resources\\basic_graph.txt", Integer.parseInt(args[1]));
                 break;
             case "C":
-                mainCore = new CannonMainCore("fileAddress", 4);
+                mainCore = new CannonMainCore("fileAddress", Integer.parseInt(args[1]));
+                break;
         }
     }
 }

@@ -1,13 +1,15 @@
 package simulator;
 
-public abstract class FloydWarshallWorker extends ParallelWorker {
+import java.util.concurrent.ArrayBlockingQueue;
 
-    private Channel westChannel;
-    private Channel northChannel;
-    private Channel eastChannel;
-    private Channel southChannel;
-    public FloydWarshallWorker(int i, int j, Channel w, Channel n, Channel e, Channel s) {
-        super(i, j);
+public abstract class FloydWarshallWorker extends ParallelWorker<Double> {
+
+    private final ArrayBlockingQueue<Double> westChannel;
+    private final ArrayBlockingQueue<Double> northChannel;
+    private final ArrayBlockingQueue<Double> eastChannel;
+    private final ArrayBlockingQueue<Double> southChannel;
+    public FloydWarshallWorker(int i, int j, ArrayBlockingQueue<Double> p, ArrayBlockingQueue<Double> w, ArrayBlockingQueue<Double> n, ArrayBlockingQueue<Double> e, ArrayBlockingQueue<Double> s, SimulatedCache cache) {
+        super(i, j, p, cache);
         westChannel = w;
         northChannel = n;
         eastChannel = e;
@@ -17,15 +19,35 @@ public abstract class FloydWarshallWorker extends ParallelWorker {
     public abstract void run();
 
     protected void writeWest(double val) {
-        westChannel.writeIn(val);
+        try {
+            westChannel.put(val);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     protected void writeNorth(double val) {
-        northChannel.writeIn(val);
+        try {
+            northChannel.put(val);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     protected double readEast() {
-        return eastChannel.readOut();
+        double retVal = 0.0;
+        try {
+            retVal = eastChannel.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return retVal;
     }
     protected double readSouth() {
-        return southChannel.readOut();
+        double retVal = 0.0;
+        try {
+            retVal = southChannel.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return retVal;
     }
 }

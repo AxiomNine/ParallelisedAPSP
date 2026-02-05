@@ -8,46 +8,31 @@ public abstract class FloydWarshallWorker extends ParallelWorker<Double> {
     private final ArrayBlockingQueue<Double> northChannel;
     private final ArrayBlockingQueue<Double> eastChannel;
     private final ArrayBlockingQueue<Double> southChannel;
-    public FloydWarshallWorker(int i, int j, ArrayBlockingQueue<Double> p, ArrayBlockingQueue<Double> w, ArrayBlockingQueue<Double> n, ArrayBlockingQueue<Double> e, ArrayBlockingQueue<Double> s, SimulatedCache cache) {
-        super(i, j, p, cache);
+    private final ArrayBlockingQueue<Double> upChannel;
+    public FloydWarshallWorker(int i, int j, int l, ArrayBlockingQueue<Double> downChannel, ArrayBlockingQueue<Double> upChannel, ArrayBlockingQueue<Double> w, ArrayBlockingQueue<Double> n, ArrayBlockingQueue<Double> e, ArrayBlockingQueue<Double> s, SimulatedCache cache) {
+        super(i, j, l, downChannel, cache);
         westChannel = w;
         northChannel = n;
         eastChannel = e;
         southChannel = s;
+        this.upChannel = upChannel;
     }
     @Override
     public abstract void run();
 
-    protected void writeWest(double val) {
-        try {
-            westChannel.put(val);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    protected void writeWest(Double val) throws InterruptedException {
+        westChannel.put(val);
     }
-    protected void writeNorth(double val) {
-        try {
-            northChannel.put(val);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    protected void writeNorth(Double val) throws InterruptedException {
+        northChannel.put(val);
     }
-    protected double readEast() {
-        double retVal = 0.0;
-        try {
-            retVal = eastChannel.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return retVal;
+    protected Double readEast() throws InterruptedException {
+        return eastChannel.take();
     }
-    protected double readSouth() {
-        double retVal = 0.0;
-        try {
-            retVal = southChannel.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return retVal;
+    protected Double readSouth() throws InterruptedException {
+        return southChannel.take();
+    }
+    protected void writeUp(Double input) throws InterruptedException {
+        upChannel.put(input);
     }
 }

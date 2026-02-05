@@ -1,21 +1,21 @@
 package simulator;
 
-import org.example.Main;
-
 import java.util.concurrent.ArrayBlockingQueue;
 
 public abstract class ParallelWorker<T extends Number> implements Runnable {
 
-    protected final int xOrdinate;
-    protected final int yOrdinate;
+    protected final int row;
+    protected final int column;
     protected final SimulatedCache cache;
-    protected final ArrayBlockingQueue<T> mainChannel;
+    protected final ArrayBlockingQueue<T> downChannel;
+    private final int torusLength;
     protected volatile boolean workDone = false;
-    public ParallelWorker(int i, int j, ArrayBlockingQueue<T> mainChannel, SimulatedCache cache){
-        xOrdinate = i;
-        yOrdinate = j;
+    public ParallelWorker(int i, int j, int l, ArrayBlockingQueue<T> downChannel, SimulatedCache cache){
+        row = i;
+        column = j;
         this.cache = cache;
-        this.mainChannel = mainChannel;
+        this.downChannel = downChannel;
+        this.torusLength = l;
     }
     @Override
     public abstract void run();
@@ -23,12 +23,10 @@ public abstract class ParallelWorker<T extends Number> implements Runnable {
     public void destroy() {
         workDone = false;
     }
-
-    private double readFromMemory(int x, int y){
-        return cache.readVal(x, y);
+    protected T readDown() throws InterruptedException {
+        return downChannel.take();
     }
-
-    private void writeToMemory(int x, int y, Path p){
-        cache.writeVal(x, y, p);
+    protected int getTorusLength() {
+        return torusLength;
     }
 }

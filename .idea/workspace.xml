@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def61798-bdb8-48a9-8da2-24e0c40bda13" name="Changes" comment="Build the base for a representation of parallel cores.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/simulator/FloydWarshallMainCore.java" afterDir="false" />
+    <list default="true" id="def61798-bdb8-48a9-8da2-24e0c40bda13" name="Changes" comment="Implement a fully working parallel implementation of Dijkstra's Algorithm for the APSP">
+      <change afterPath="$PROJECT_DIR$/src/main/java/simulator/GraphCompressor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/simulator/PathElement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/calNetworkEdges.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/calRoadNetwork.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/msg_network_chars.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cannon/CannonMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cannon/CannonMainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cannon/CannonWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cannon/CannonWorker.java" afterDir="false" />
@@ -14,11 +18,12 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/fox/FoxMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fox/FoxMainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fox/FoxWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fox/FoxWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/Channel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/Channel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/FloydWarshallMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/FloydWarshallMainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulator/FloydWarshallWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/FloydWarshallWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulator/MainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/MainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulator/ParallelWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/ParallelWorker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/Path.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/Path.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/Path.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulator/SimulatedCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/SimulatedCache.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,11 +66,16 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Daniel\Documents\ParallelProject\ParallelisedAPSP\src\main\resources" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="ParallelisedAPSP" />
-      <option name="PROGRAM_PARAMETERS" value="F 1" />
+      <option name="PROGRAM_PARAMETERS" value="F 4 basic_graph.txt" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -94,12 +104,40 @@
       <option name="project" value="LOCAL" />
       <updated>1762711007750</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Implement a fully working parallel implementation of Dijkstra's Algorithm for the APSP">
+      <option name="closed" value="true" />
+      <created>1766510619715</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1766510619715</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Implement a fully working parallel implementation of Dijkstra's Algorithm for the APSP">
+      <option name="closed" value="true" />
+      <created>1766510647444</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1766510647444</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Build the base for a representation of parallel cores." />
-    <option name="LAST_COMMIT_MESSAGE" value="Build the base for a representation of parallel cores." />
+    <MESSAGE value="Implement a fully working parallel implementation of Dijkstra's Algorithm for the APSP" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement a fully working parallel implementation of Dijkstra's Algorithm for the APSP" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

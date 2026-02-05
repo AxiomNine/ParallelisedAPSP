@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class DijkstraMainCore extends MainCore {
+public class DijkstraMainCore extends MainCore<Integer> {
     private final List<DijkstraWorker> pausedQueueSync;
     public DijkstraMainCore(String fileAddress, int torusLength) {
         super(fileAddress, torusLength);
@@ -17,33 +17,57 @@ public class DijkstraMainCore extends MainCore {
         try {
             for (int i = 0; i < torusLength; i++) {
                 for (int j = 0; j < torusLength; j++) {
-                    this.coreChannels[i][j] = new ArrayBlockingQueue<Integer>(1);
-                    this.coreWorkers[i][j] = new DijkstraWorker(i, j, this.coreChannels[i][j], cache, this);
+                    this.coreDownChannels[i][j] = new ArrayBlockingQueue<Integer>(1);
+                    this.coreWorkers[i][j] = new DijkstraWorker(i, j, torusLength, this.coreDownChannels[i][j], cache, this);
                     Thread core = new Thread(coreWorkers[i][j]);
                     this.coreThreads[i][j] = core;
                     core.start();
                 }
             }
 
-            for (int i = 0; i < torusLength * torusLength; i++) {
-                coreChannels[i / torusLength][i % torusLength].put(counter);
+            for (int i = 0; i < Math.min(torusLength * torusLength, cache.getSize()); i++) {
+                coreDownChannels[i/torusLength][i % torusLength].put(counter);
                 counter++;
             }
 
-            while (counter < cache.getSize()) {
-                synchronized (this) {
-                    this.wait();
-                    DijkstraWorker worker = pausedQueueSync.removeFirst();
-                    worker.getChannel().put(counter);
-                    counter++;
+
+
+            synchronized (this) {
+                while (counter < cache.getSize()) {
+                    if (!pausedQueueSync.isEmpty()) {
+                        DijkstraWorker worker = pausedQueueSync.removeFirst();
+                        worker.getDownChannel().put(counter);
+                        counter++;
+                    } else {
+                        this.wait();
+                    }
                 }
             }
-            for (int i = 0; i < torusLength; i++) {
-                for (int j = 0; j < torusLength; j++) {
-                    coreWorkers[i][j].destroy();
-                    coreThreads[i][j].interrupt();
+
+            int coreCount = 0;
+
+            synchronized (this) {
+                while (coreCount < Math.min(torusLength*torusLength, cache.getSize())) {
+                    if (!pausedQueueSync.isEmpty()) {
+                        DijkstraWorker worker = pausedQueueSync.removeFirst();
+                        int threadPos = worker.getPosition();
+                        coreThreads[threadPos / torusLength][threadPos % torusLength].interrupt();
+                        coreCount++;
+                    } else {
+                        this.wait();
+                    }
                 }
-                cache.printAllPaths(i);
+                if (torusLength*torusLength > cache.getSize()) {
+                    for (int i = cache.getSize(); i < torusLength*torusLength; i++) {
+                        coreThreads[i / torusLength][i % torusLength].interrupt();
+                    }
+                }
+            }
+
+            for (int i = 0; i < cache.getSize(); i++) {
+                for (int j = 0; j < cache.getSize(); j++) {
+                    cache.printDijkstraPathFrom(i, j);
+                }
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -55,10 +79,6 @@ public class DijkstraMainCore extends MainCore {
             pausedQueueSync.add(worker);
             this.notify();
         }
-    }
-
-    private void destroyCores() {
-
     }
     @Override
     public void execute() {

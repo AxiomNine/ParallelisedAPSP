@@ -6,33 +6,44 @@ import simulator.SimulatedCache;
 
 public class FoxWorker extends FloydWarshallWorker {
 
-    public FoxWorker(int i, int j, ArrayBlockingQueue<Double> p, ArrayBlockingQueue<Double> w, ArrayBlockingQueue<Double> n, ArrayBlockingQueue<Double> e, ArrayBlockingQueue<Double> s, SimulatedCache cache){
-        super(i, j, p, w, n, e, s, cache);
+    public FoxWorker(int i, int j, int l, ArrayBlockingQueue<Double> downChannel, ArrayBlockingQueue<Double> upChannel, ArrayBlockingQueue<Double> w, ArrayBlockingQueue<Double> n, ArrayBlockingQueue<Double> e, ArrayBlockingQueue<Double> s, SimulatedCache cache){
+        super(i, j, l, downChannel, upChannel, w, n, e, s, cache);
     }
     public void run() {
         try {
             while (true) {
-                double xVal = mainChannel.take();
-                double yVal = mainChannel.take();
-                double runningVal = Double.POSITIVE_INFINITY;
-                for (int i = 0; i < cache.getSize(); i++) {
-                    if (yOrdinate - xOrdinate % cache.getSize() == i) {
+                Double xVal = readDown();
+                Double yVal = readDown();
+                Double witness = readDown();
+                Double runningVal = Double.POSITIVE_INFINITY;
+                Double broadcastVal;
+                Double broadcastWitness;
+                Double finalWitness = witness;
+                for (int i = 0; i < getTorusLength(); i++) {
+                    if (Math.floorMod(column - row, getTorusLength()) == i) {
                         writeWest(xVal);
-                        readEast();
+                        broadcastVal = readEast();
+                        writeWest(witness);
+                        broadcastWitness = readEast();
                     } else {
-                        xVal = readEast();
-                        writeWest(xVal);
+                        broadcastVal = readEast();
+                        writeWest(broadcastVal);
+                        broadcastWitness = readEast();
+                        writeWest(broadcastWitness);
                     }
-                    runningVal = Math.min(runningVal, (xVal * 100000 + yVal * 100000) / 100000);
+                    Double newVal = (broadcastVal * 100000 + yVal * 100000) / 100000;
+                    if (newVal < runningVal) {
+                        runningVal = newVal;
+                        finalWitness = broadcastWitness;
+                    }
                     writeNorth(yVal);
                     yVal = readSouth();
                 }
-                mainChannel.put(runningVal);
+                writeUp(runningVal);
+                writeUp(finalWitness);
             }
         } catch (InterruptedException e) {
             return;
         }
     }
-
-
 }

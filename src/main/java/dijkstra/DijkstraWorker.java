@@ -1,6 +1,5 @@
 package dijkstra;
 
-import simulator.Channel;
 import simulator.ParallelWorker;
 
 import java.util.Arrays;
@@ -9,24 +8,28 @@ import java.util.PriorityQueue;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import simulator.Path;
+import simulator.PathElement;
 import simulator.SimulatedCache;
 
 public class DijkstraWorker extends ParallelWorker<Integer> {
 
-    private final PriorityQueue<Path> pq = new PriorityQueue<Path>();
+    private final PriorityQueue<PathElement> pq = new PriorityQueue<PathElement>();
 
     private final DijkstraMainCore mainCore;
 
-    public DijkstraWorker(int i, int j, ArrayBlockingQueue<Integer> mainChannel, SimulatedCache cache, DijkstraMainCore mainCore) {
-        super(i, j, mainChannel, cache);
+    public int getPosition(){
+        return row * getTorusLength() + column;
+    }
+
+    public DijkstraWorker(int i, int j, int l, ArrayBlockingQueue<Integer> downChannel, SimulatedCache cache, DijkstraMainCore mainCore) {
+        super(i, j, l, downChannel, cache);
         this.mainCore = mainCore;
     }
     @Override
     public void run() {
         try {
             while (true) {
-                int origin = mainChannel.take();
+                int origin = readDown();
                 singleDijkstra(origin);
                 mainCore.signalReady(this);
             }
@@ -35,39 +38,35 @@ public class DijkstraWorker extends ParallelWorker<Integer> {
         }
     }
 
-    public ArrayBlockingQueue<Integer> getChannel() {
-        return mainChannel;
+    public ArrayBlockingQueue<Integer> getDownChannel() {
+        return downChannel;
     }
 
     private void singleDijkstra(int origin) {
-        Path p = new Path();
-        p.appendToPath(0, origin);
+        PathElement p = new PathElement(origin);
         pq.add(p);
-
         while (!pq.isEmpty()) {
-            Path uPath = pq.poll();
-            int u = uPath.getHead();
+            PathElement uElement = pq.poll();
+            int u = uElement.getHead();
 
-            HashMap<Integer, Double> neighbours = cache.getNeighboursAndPaths(u);
+            HashMap<Integer, Double> neighbours = cache.getNeighbours(u);
             for (Integer v : neighbours.keySet()) {
-                double alt = uPath.getLength() + neighbours.get(v);
-                if (alt < cache.getCurrentPath(origin, v).getLength()) {
-                    Path vPath = new Path(uPath);
-                    vPath.appendToPath(neighbours.get(v), v);
-                    Iterator<Path> i = pq.iterator();
+                double alt = uElement.getLength() + neighbours.get(v);
+                if (alt < cache.getCurrentCost(origin, v)) {
+                    PathElement vElement = new PathElement(v, alt);
+                    Iterator<PathElement> i = pq.iterator();
                     boolean changed = false;
                     while (i.hasNext() && !changed) {
-                        Path potentialPath = i.next();
-                        if (potentialPath.getHead() == v) {
+                        PathElement potentialElement = i.next();
+                        if (potentialElement.getHead() == v) {
                             changed = true;
-                            pq.remove(potentialPath);
+                            pq.remove(potentialElement);
                         }
                     }
-                    pq.add(vPath);
-                    cache.writeVal(v, origin, vPath);
+                    pq.add(vElement);
+                    cache.writeVal(origin, v, vElement.getLength(), u);
                 }
             }
         }
-        cache.printAllPaths(origin);
     }
 }

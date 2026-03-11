@@ -3,8 +3,6 @@ package org.example;
 import cannon.CannonMainCore;
 import dijkstra.DijkstraMainCore;
 import fox.FoxMainCore;
-import simulator.MainCore;
-import simulator.SimulatedCache;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.

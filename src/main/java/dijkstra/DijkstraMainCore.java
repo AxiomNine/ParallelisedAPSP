@@ -1,6 +1,7 @@
 package dijkstra;
 
-import simulator.MainCore;
+import base.MainCore;
+import metrics.TimerUnit;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -66,9 +67,10 @@ public class DijkstraMainCore extends MainCore<Integer> {
 
             for (int i = 0; i < cache.getSize(); i++) {
                 for (int j = 0; j < cache.getSize(); j++) {
-                    cache.printDijkstraPathFrom(i, j);
+                    //cache.printDijkstraPathFrom(i, j);
                 }
             }
+            getElapsedTimeOfCores();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -79,8 +81,5 @@ public class DijkstraMainCore extends MainCore<Integer> {
             pausedQueueSync.add(worker);
             this.notify();
         }
-    }
-    @Override
-    public void execute() {
     }
 }

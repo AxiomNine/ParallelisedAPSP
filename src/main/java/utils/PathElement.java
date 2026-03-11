@@ -1,4 +1,4 @@
-package simulator;
+package utils;
 
 public class PathElement implements Comparable<PathElement>{
     private double totalLength;

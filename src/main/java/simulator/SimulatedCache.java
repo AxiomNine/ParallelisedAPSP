@@ -8,13 +8,16 @@ import java.util.stream.Stream;
 
 public class SimulatedCache {
 
-    private Double[][] adjacencyMatrix;
+    protected Double[][] adjacencyMatrix;
     private Double[][] preparedMatrix;
-    private Double[][] pathCostMatrix;
-    private int[][] witnessMatrix;
+    protected Double[][] pathCostMatrix;
+    protected int[][] witnessMatrix;
 
-    private int size;
-
+    protected int size;
+    protected ArrayList<ArrayList<Integer>> nodesIn;
+    protected ArrayList<ArrayList<Double>> costsIn;
+    protected ArrayList<ArrayList<Integer>> nodesOut;
+    protected ArrayList<ArrayList<Double>> costsOut;
     public SimulatedCache(String fileAddress) {
         File sourceFile = new File(fileAddress);
         try (Scanner reader = new Scanner(sourceFile)){
@@ -31,32 +34,59 @@ public class SimulatedCache {
                 cost.add(Double.parseDouble(linkInfo[linkInfo.length - 1]));
                 size = Math.max(Math.max(size, leftNode + 1), rightNode + 1);
             }
-            adjacencyMatrix = new Double[size][size];
-            pathCostMatrix = new Double[size][size];
-            witnessMatrix = new int[size][size];
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if (i == j) {
-                        pathCostMatrix[i][j] = 0.0;
-                        witnessMatrix[i][j] = i;
-                        adjacencyMatrix[i][j] = 0.0;
-                    } else {
-                        pathCostMatrix[i][j] = Double.POSITIVE_INFINITY;
-                        witnessMatrix[i][j] = -1;
-                        adjacencyMatrix[i][j] = Double.POSITIVE_INFINITY;
-                    }
-                }
-            }
             int edgeCount = cost.size();
+
+            nodesOut = new ArrayList<ArrayList<Integer>>(size);
+            costsOut = new ArrayList<ArrayList<Double>>(size);
+            nodesIn = new ArrayList<ArrayList<Integer>>(size);
+            costsIn = new ArrayList<ArrayList<Double>>(size);
             for (int i = 0; i < edgeCount; i++) {
                 Integer l = nodeLeft.pop();
                 Integer r = nodeRight.pop();
                 Double c = cost.pop();
-                adjacencyMatrix[l][r] = c;
+                while (l >= nodesOut.size() || r >= nodesOut.size()){
+                    nodesOut.add(new ArrayList<Integer>());
+                    costsOut.add(new ArrayList<Double>());
+                    nodesIn.add(new ArrayList<Integer>());
+                    costsIn.add(new ArrayList<Double>());
+                }
+                nodesOut.get(l).add(r);
+                costsOut.get(l).add(c);
+                nodesIn.get(r).add(l);
+                costsIn.get(r).add(c);
             }
+            matrixConstruction(edgeCount, nodeLeft, nodeRight, cost);
         } catch (FileNotFoundException e) {
             System.err.println("The file " + fileAddress + " appears not to exist.");
             e.printStackTrace();
+        }
+    }
+    protected void matrixConstruction(int edgeCount, LinkedList<Integer> nodeLeft, LinkedList<Integer> nodeRight,LinkedList<Double> cost){
+        initiateMatrices();
+        for (int i = 0; i < edgeCount; i++) {
+            Integer l = nodeLeft.pop();
+            Integer r = nodeRight.pop();
+            Double c = cost.pop();
+            adjacencyMatrix[l][r] = c;
+        }
+
+    }
+    protected void initiateMatrices() {
+        adjacencyMatrix = new Double[size][size];
+        pathCostMatrix = new Double[size][size];
+        witnessMatrix = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i == j) {
+                    pathCostMatrix[i][j] = 0.0;
+                    witnessMatrix[i][j] = i;
+                    adjacencyMatrix[i][j] = 0.0;
+                } else {
+                    pathCostMatrix[i][j] = Double.POSITIVE_INFINITY;
+                    witnessMatrix[i][j] = -1;
+                    adjacencyMatrix[i][j] = Double.POSITIVE_INFINITY;
+                }
+            }
         }
     }
     public void prepareToDouble() {
@@ -97,28 +127,16 @@ public class SimulatedCache {
         return pathCostMatrix[from][to];
     }
 
-    public void printAllCosts(int row){
-        System.out.println("FROM: " + row);
-        int c = 0;
-        for (Double d : pathCostMatrix[row]) {
-            System.out.print("TO: " + c + " - ");
-                System.out.println(d);
-                c++;
-        }
-    }
-
     public void printDijkstraPathFrom(int from, int to) {
-        if (witnessMatrix[from][to] != -1 && from != to) {
-            System.out.print("PATH FROM: " + from);
-            System.out.print(" TO: " + to + ": ");
-            int mid = to;
-            while (mid != witnessMatrix[from][mid]) {
-                System.out.print(mid + "<--");
-                mid = witnessMatrix[from][mid];
-            }
-            System.out.print(from);
-            System.out.println(" - DIST: " + pathCostMatrix[from][to]);
+        System.out.print("PATH FROM: " + from);
+        System.out.print(" TO: " + to + ": ");
+        System.out.print(to);
+        int mid = to;
+        while (mid != witnessMatrix[from][mid] && witnessMatrix[from][mid] != -1) {
+            mid = witnessMatrix[from][mid];
+            System.out.print("<--"+ mid);
         }
+        System.out.println();
     }
     public void printFWPathFrom(int from, int to){
         System.out.print("PATH FROM: " + from);
@@ -128,18 +146,15 @@ public class SimulatedCache {
         }
         System.out.println("END");
     }
-    public void calculateAndPrintAllPaths() {
+    public void calculateAndPrintAllPaths(){
         for (int i = 0; i < getSize(); i++){
             System.out.println("PATHS FROM: " + i);
             for (int j = 0; j < getSize(); j++){
-                if (pathCostMatrix[i][j] != Double.POSITIVE_INFINITY && pathCostMatrix[i][j] != 0.0) {
-                    System.out.print("TO " + j + ": ");
-                    for (Integer d : calculatePath(i, j)) {
-                        System.out.print(d + "-->");
-                    }
-                    System.out.print("END");
-                    System.out.printf(" - DIST: %.4f\n\n", pathCostMatrix[i][j]);
+                System.out.print("TO:" + j + ": ");
+                for (Integer d : calculatePath(i, j)) {
+                    System.out.print(d + "-->");
                 }
+                System.out.println("END\n");
             }
         }
     }
@@ -164,65 +179,12 @@ public class SimulatedCache {
             }
         }
     }
-    public void compressGraph() {
-        HashMap<ArrayList<Integer>, Double> pathLengthMap = new HashMap<ArrayList<Integer>, Double>();
-        HashMap<Integer, ArrayList<Integer>> nodePathMap = new HashMap<Integer, ArrayList<Integer>>();
-        for (int node = 0; node < adjacencyMatrix.length; node++){
-            HashMap<Integer, Double> neighbours = getNeighbours(node);
-            if (neighbours.size() == 2) {
-                ArrayList<Integer> existingPathLeft = null;
-                ArrayList<Integer> existingPathRight = null;
-                Double totalLength = neighbours.values().stream().mapToDouble(Double::doubleValue).sum();
-                Set<Integer> neighbourIds = neighbours.keySet();
-                for (ArrayList<Integer> path : pathLengthMap.keySet()) {
-                    if (neighbourIds.contains(path.getFirst())){
-                        existingPathRight = path;
-                        neighbourIds.remove(path.getFirst());
-                    }
-                    else if (neighbourIds.contains(path.getLast())){
-                        existingPathLeft = path;
-                        neighbourIds.remove(path.getLast());
-                    }
-                }
+    public ArrayList<ArrayList<Integer>> getNodesIn(){ return nodesIn; }
+    public ArrayList<ArrayList<Integer>> getNodesOut(){ return nodesOut; }
+    public ArrayList<ArrayList<Double>> getCostsIn(){ return costsIn; }
+    public ArrayList<ArrayList<Double>> getCostsOut(){ return costsOut; }
 
-                if (existingPathLeft == null && existingPathRight == null) {
-                    ArrayList<Integer> neighbourIdList = new ArrayList<>(node);
-                    nodePathMap.put(node, neighbourIdList);
-                    pathLengthMap.put(neighbourIdList, totalLength);
-                } else if (existingPathLeft == null) {
-                    existingPathRight.addFirst(node);
-                    nodePathMap.put(node, existingPathRight);
-                    pathLengthMap.put(existingPathRight, neighbours.get(existingPathRight.getFirst()) + pathLengthMap.get(existingPathRight));
-                } else if (existingPathRight == null) {
-                    existingPathLeft.addLast(node);
-                    nodePathMap.put(node, existingPathLeft);
-                    pathLengthMap.put(existingPathLeft, neighbours.get(existingPathLeft.getLast()) + pathLengthMap.get(existingPathLeft));
-                } else {
-                    if (existingPathLeft.size() <= existingPathRight.size()) {
-                        existingPathRight.addFirst(node);
-                        existingPathRight.addAll(0, existingPathLeft);
-                        for (Integer leftPathNode : existingPathLeft) {
-                            nodePathMap.put(leftPathNode, existingPathRight);
-                        }
-                        nodePathMap.put(node, existingPathRight);
-                        pathLengthMap.put(existingPathRight, totalLength + pathLengthMap.get(existingPathLeft) + pathLengthMap.get(existingPathRight));
-                        pathLengthMap.remove(existingPathLeft);
-                    } else {
-                        existingPathLeft.addLast(node);
-                        existingPathLeft.addAll(existingPathRight);
-                        for (Integer rightPathNode : existingPathRight) {
-                            nodePathMap.put(rightPathNode, existingPathLeft);
-                        }
-                        nodePathMap.put(node, existingPathLeft);
-                        pathLengthMap.put(existingPathLeft, totalLength + pathLengthMap.get(existingPathLeft) + pathLengthMap.get(existingPathRight));
-                        pathLengthMap.remove(existingPathRight);
-                    }
-                }
-            }
-        }
-
-        int newMatrixSize = getSize() - nodePathMap.keySet().size();
-        Double[][] newAdjacencyMatrix = new Double[newMatrixSize][newMatrixSize];
-        
+    public Double[][] getAdjacencyMatrix() {
+        return adjacencyMatrix;
     }
 }

@@ -4,41 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def61798-bdb8-48a9-8da2-24e0c40bda13" name="Changes" comment="Implement three fully completed algorithms for solving APSP in parallel">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/compressor/CompressedCache.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/compressor/GraphCompressor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dynamic/DynamicImplementation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/metrics/TimerUnit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/Message.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/broughton.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/cambourne.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/cambridge.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/castle_combe.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/chipping_campden.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/cottenham.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ely.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/keswick.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/lavenham.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/liverpool.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/norwich.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nottingham.txt" afterDir="false" />
+    <list default="true" id="def61798-bdb8-48a9-8da2-24e0c40bda13" name="Changes" comment="Add graph compression capabilities, more sample graphs and move computation logic from main core to parallel cores.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicMainCore.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/FloydWarshallMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/MatMulMainCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/FloydWarshallWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/MatMulWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/base/MainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/MainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cannon/CannonMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cannon/CannonMainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cannon/CannonWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cannon/CannonWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/compressor/CompressedCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/compressor/CompressedCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraMainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dynamic/DynamicImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dynamic/DynamicImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fox/FoxMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fox/FoxMainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fox/FoxWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fox/FoxWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/FloydWarshallMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/FloydWarshallMainCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/FloydWarshallWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/FloydWarshallWorker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/GraphCompressor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/MainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/MainCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/ParallelWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/ParallelWorker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulator/PathElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/PathElement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulator/SimulatedCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/SimulatedCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/calNetworkEdges.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/calNetworkEdges.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Message.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,33 +50,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "onboarding.tips.debug.path": "C:/Users/Daniel/Documents/ParallelProject/ParallelisedAPSP/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Alt.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Daniel/Documents/ParallelProject/ParallelisedAPSP/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Daniel\Documents\ParallelProject\ParallelisedAPSP\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Alt" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="ParallelisedAPSP" />
-      <option name="PROGRAM_PARAMETERS" value="C 64 calNetworkEdges.txt" />
+      <option name="PROGRAM_PARAMETERS" value="F 4 basic_graph.txt" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.Main" />
+      <module name="ParallelisedAPSP" />
+      <option name="PROGRAM_PARAMETERS" value="F 2 basic_graph.txt" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -104,6 +96,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <module name="ParallelisedAPSP" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Alt" />
+      <item itemvalue="Application.Main" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -146,7 +148,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770301601666</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add graph compression capabilities, more sample graphs and move computation logic from main core to parallel cores.">
+      <option name="closed" value="true" />
+      <created>1773258128887</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1773258128887</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -164,7 +174,8 @@
     <MESSAGE value="Build the base for a representation of parallel cores." />
     <MESSAGE value="Implement a fully working parallel implementation of Dijkstra's Algorithm for the APSP" />
     <MESSAGE value="Implement three fully completed algorithms for solving APSP in parallel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement three fully completed algorithms for solving APSP in parallel" />
+    <MESSAGE value="Add graph compression capabilities, more sample graphs and move computation logic from main core to parallel cores." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add graph compression capabilities, more sample graphs and move computation logic from main core to parallel cores." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -189,17 +200,37 @@
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/base/MainCore.java</url>
-          <line>30</line>
-          <option name="timeStamp" value="64" />
+          <url>file://$PROJECT_DIR$/src/main/java/fox/FoxWorker.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="134" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/fox/FoxWorker.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/base/MatMulMainCore.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="146" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
+        <PinnedItemInfo parentTag="dynamic.DijkstraDynamicMainCore" memberName="pausedQueueSync" />
         <PinnedItemInfo parentTag="simulator.SimulatedCache" memberName="preparedMatrix" />
         <PinnedItemInfo parentTag="simulator.CompressedCache" memberName="adjacencyMatrix" />
       </pinned-members>
     </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="r" />
+        <watch expression="c" />
+        <watch expression="i" />
+        <watch expression="cache.pathCostMatrix" />
+        <watch expression="cache.predMatrix" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

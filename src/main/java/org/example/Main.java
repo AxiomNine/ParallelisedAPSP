@@ -1,7 +1,9 @@
 package org.example;
 
+import base.MainCore;
 import cannon.CannonMainCore;
 import dijkstra.DijkstraMainCore;
+import dynamic.DynamicImplementation;
 import fox.FoxMainCore;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -9,15 +11,19 @@ import fox.FoxMainCore;
 public class Main {
     public static void main(String[] args) {
         String fileAddress = "C:\\Users\\Daniel\\Documents\\ParallelProject\\ParallelisedAPSP\\src\\main\\resources\\" + args[2];
+        MainCore core;
         switch(args[0]) {
             case "D":
-                new DijkstraMainCore(fileAddress, Integer.parseInt(args[1]));
+                core = new DijkstraMainCore(fileAddress, Integer.parseInt(args[1]));
+                new DynamicImplementation(core);
                 break;
             case "F":
-                new FoxMainCore(fileAddress, Integer.parseInt(args[1]));
+                core = new FoxMainCore(fileAddress, Integer.parseInt(args[1]));
+                new DynamicImplementation(core);
                 break;
             case "C":
-                new CannonMainCore(fileAddress, Integer.parseInt(args[1]));
+                core = new CannonMainCore(fileAddress, Integer.parseInt(args[1]));
+                new DynamicImplementation(core);
                 break;
         }
     }

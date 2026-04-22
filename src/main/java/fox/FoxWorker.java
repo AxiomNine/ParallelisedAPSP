@@ -1,11 +1,11 @@
 package fox;
 
 import java.util.concurrent.ArrayBlockingQueue;
-import base.FloydWarshallWorker;
+import base.MatMulWorker;
 import simulator.SimulatedCache;
 import utils.Message;
 
-public class FoxWorker extends FloydWarshallWorker {
+public class FoxWorker extends MatMulWorker {
 
     public FoxWorker(int i, int j, int l, ArrayBlockingQueue<Boolean> downChannel, ArrayBlockingQueue<Boolean> upChannel, ArrayBlockingQueue<Message> w, ArrayBlockingQueue<Message> n, ArrayBlockingQueue<Message> e, ArrayBlockingQueue<Message> s, SimulatedCache cache, int blockCount){
         super(i, j, l, downChannel, upChannel, w, n, e, s, cache, blockCount);
@@ -29,18 +29,20 @@ public class FoxWorker extends FloydWarshallWorker {
                         for (int c = 0; c < getBlockCount(); c++){
                             int minirow2 = (i + r) % getBlockCount()*getTorusLength() + row;
                             int minicol2 = c*getTorusLength() + column;
+                            int pred;
                             if (minirow2 < cache.getSize() && minicol2 < cache.getSize()) {
                                 b = cache.readGraphVal(minirow2, minicol2);
-                                timerUnit.addToTimer(row, column, 1);
+                                pred = cache.readPred(minirow2, minicol2);
+                                timerUnit.addToTimer(row, column, 2);
                             } else {
                                 b = Double.POSITIVE_INFINITY;
+                                pred = -1;
                             }
-                            int witness = ((i+r)*getTorusLength())%(getBlockCount()*getTorusLength()) + column;
 
                             timerUnit.addToTimer(row, column, 14);
-                            singleFW(a, b, witness);
+                            singleMM(a, b, pred);
                             if (minirow1 < cache.getSize() && minicol2 < cache.getSize()) {
-                                cache.writeValIfLess(minirow1, minicol2, q, outWitness);
+                                cache.writeValIfLess(minirow1, minicol2, q, outPred);
                                 timerUnit.addToTimer(row, column, 5);
                             }
                             timerUnit.addToTimer(row, column, 3);
@@ -58,42 +60,40 @@ public class FoxWorker extends FloydWarshallWorker {
     }
     
     @Override
-    protected void singleFW(double xVal, double yVal, int witness) throws InterruptedException {
+    protected void singleMM(double xVal, double yVal, int pred) throws InterruptedException {
         Double runningVal = Double.POSITIVE_INFINITY;
         Double broadcastVal;
-        int broadcastWitness;
-        int finalWitness = witness;
+        int finalPred = pred;
         timerUnit.addToTimer(row, column, 3);
         for (int i = 0; i < getTorusLength(); i++) {
             timerUnit.addToTimer(row, column, 6);
             if (Math.floorMod(column - row, getTorusLength()) == i) {
-                writeWest(new Message(xVal, witness));
+                writeWest(new Message(xVal, -1));
                 timerUnit.synchroniseRow(row, column);
-                writeNorth(new Message(yVal, -1));
+                writeNorth(new Message(yVal, pred));
                 Message message = readEast();
                 broadcastVal = message.getVal();
-                broadcastWitness = message.getWitness();
             } else {
                 Message message = readEast();
                 broadcastVal = message.getVal();
-                broadcastWitness = message.getWitness();
-                writeWest(new Message(broadcastVal, broadcastWitness));
+                writeWest(new Message(broadcastVal, -1));
                 timerUnit.commitTime(row, column);
-                writeNorth(new Message(yVal, -1));
+                writeNorth(new Message(yVal, pred));
             }
             Double newVal = broadcastVal + yVal;
             timerUnit.addToTimer(row, column, 5);
             if (newVal < runningVal) {
                 runningVal = newVal;
-                finalWitness = broadcastWitness;
+                finalPred = pred;
                 timerUnit.addToTimer(row, column, 4);
             }
             Message message = readSouth();
             yVal = message.getVal();
+            pred = message.getPred();
             timerUnit.synchroniseMessage(row, column, false);
         }
         q = runningVal;
-        outWitness = finalWitness;
+        outPred = finalPred;
         timerUnit.addToTimer(row, column, 3);
     }
 }

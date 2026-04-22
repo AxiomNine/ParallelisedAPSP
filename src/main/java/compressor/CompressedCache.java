@@ -21,9 +21,8 @@ public class CompressedCache extends SimulatedCache {
     }
 
     private void createMatrixFromList(ArrayList<ArrayList<Integer>> graph, ArrayList<ArrayList<Double>> costs, HashMap<Integer, Integer> compressionMap) {
-        adjacencyMatrix = new Double[size][size];
-        pathCostMatrix = new Double[size][size];
-        witnessMatrix = new int[size][size];
+        adjacencyMatrix = new double[size][size];
+        predMatrix = new int[size][size];
         initiateMatrices();
         for (int i = 0; i < graph.size(); i++) {
             ArrayList<Integer> nodeRow = graph.get(i);
@@ -31,6 +30,7 @@ public class CompressedCache extends SimulatedCache {
                 for (Integer j : nodeRow) {
                     int index = nodeRow.indexOf(j);
                     adjacencyMatrix[i][compressionMap.get(j)] = costs.get(i).get(index);
+                    predMatrix[i][compressionMap.get(j)] = i;
                     nodeRow.set(index, compressionMap.get(j));
                 }
             }

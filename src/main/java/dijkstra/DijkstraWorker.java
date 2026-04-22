@@ -12,7 +12,7 @@ import utils.PathElement;
 import simulator.SimulatedCache;
 
 public class DijkstraWorker extends ParallelWorker<Integer> {
-    private final PriorityQueue<PathElement> pq = new PriorityQueue<PathElement>();
+    protected final PriorityQueue<PathElement> pq = new PriorityQueue<PathElement>();
 
     private final DijkstraMainCore mainCore;
 
@@ -43,7 +43,7 @@ public class DijkstraWorker extends ParallelWorker<Integer> {
         return downChannel;
     }
 
-    private void singleDijkstra(int origin) {
+    protected void singleDijkstra(int origin) {
         PathElement p = new PathElement(origin);
         pq.add(p);
         timerUnit.addToTimer(row, column, 10);

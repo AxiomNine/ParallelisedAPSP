@@ -1,14 +1,12 @@
 package cannon;
 
-import base.FloydWarshallMainCore;
-import metrics.TimerUnit;
+import base.MatMulMainCore;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class CannonMainCore extends FloydWarshallMainCore {
+public class CannonMainCore extends MatMulMainCore {
     public CannonMainCore(String fileAddress, int torusLength){
         super(fileAddress, torusLength);
-
         int blockCount = Math.ceilDiv(cache.getSize(), torusLength);
         for (int i = 0; i < torusLength; i++) {
             for (int j = 0; j < torusLength; j++) {

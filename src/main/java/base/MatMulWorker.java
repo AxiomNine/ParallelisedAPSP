@@ -5,7 +5,7 @@ import utils.Message;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-public abstract class FloydWarshallWorker extends ParallelWorker<Boolean> {
+public abstract class MatMulWorker extends ParallelWorker<Boolean> {
 
     private final ArrayBlockingQueue<Message> westChannel;
     private final ArrayBlockingQueue<Message> northChannel;
@@ -14,8 +14,8 @@ public abstract class FloydWarshallWorker extends ParallelWorker<Boolean> {
     private final ArrayBlockingQueue<Boolean> upChannel;
     private final int blockCount;
     protected double q;
-    protected int outWitness;
-    public FloydWarshallWorker(int i, int j, int l, ArrayBlockingQueue<Boolean> downChannel, ArrayBlockingQueue<Boolean> upChannel, ArrayBlockingQueue<Message> w, ArrayBlockingQueue<Message> n, ArrayBlockingQueue<Message> e, ArrayBlockingQueue<Message> s, SimulatedCache cache, int blockCount) {
+    protected int outPred;
+    public MatMulWorker(int i, int j, int l, ArrayBlockingQueue<Boolean> downChannel, ArrayBlockingQueue<Boolean> upChannel, ArrayBlockingQueue<Message> w, ArrayBlockingQueue<Message> n, ArrayBlockingQueue<Message> e, ArrayBlockingQueue<Message> s, SimulatedCache cache, int blockCount) {
         super(i, j, l, downChannel, cache);
         westChannel = w;
         northChannel = n;
@@ -24,7 +24,7 @@ public abstract class FloydWarshallWorker extends ParallelWorker<Boolean> {
         this.upChannel = upChannel;
         this.blockCount = blockCount;
         q = -1.0;
-        outWitness = -1;
+        outPred = -1;
     }
     @Override
     public abstract void run();
@@ -45,6 +45,6 @@ public abstract class FloydWarshallWorker extends ParallelWorker<Boolean> {
         upChannel.put(input);
     }
 
-    protected abstract void singleFW(double xVal, double yVal, int witness) throws InterruptedException;
+    protected abstract void singleMM(double xVal, double yVal, int witness) throws InterruptedException;
     protected int getBlockCount(){ return blockCount; }
 }

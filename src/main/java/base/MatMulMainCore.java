@@ -3,16 +3,15 @@ package base;
 import metrics.TimerUnit;
 import utils.Message;
 
-import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public abstract class FloydWarshallMainCore extends MainCore<Boolean> {
+public abstract class MatMulMainCore extends MainCore<Boolean> {
     protected final ArrayBlockingQueue<Message>[][] hchannels;
     protected final ArrayBlockingQueue<Message>[][] vchannels;
     protected final ArrayBlockingQueue<Boolean>[][] coreUpChannels;
     protected final int blockCount;
 
-    public FloydWarshallMainCore(String fileAddress, int torusLength){
+    public MatMulMainCore(String fileAddress, int torusLength){
         super(fileAddress, torusLength);
         hchannels = new ArrayBlockingQueue[torusLength][torusLength];
         vchannels = new ArrayBlockingQueue[torusLength][torusLength];
@@ -50,6 +49,11 @@ public abstract class FloydWarshallMainCore extends MainCore<Boolean> {
             for (int b = 0; b < coreWorkers.length; b++) {
                 coreWorkers[a][b].destroy();
                 coreThreads[a][b].interrupt();
+            }
+        }
+        for (int i = 0; i < cache.getSize(); i++) {
+            for (int j = 0; j < cache.getSize(); j++) {
+                cache.printDijkstraPathFrom(i, j);
             }
         }
         getElapsedTimeOfCores();

@@ -8,10 +8,10 @@ import java.util.stream.Stream;
 
 public class SimulatedCache {
 
-    protected Double[][] adjacencyMatrix;
-    private Double[][] preparedMatrix;
-    protected Double[][] pathCostMatrix;
-    protected int[][] witnessMatrix;
+    protected double[][] adjacencyMatrix;
+    private double[][] preparedMatrix;
+    protected double[][] pathCostMatrix;
+    protected int[][] predMatrix;
 
     protected int size;
     protected ArrayList<ArrayList<Integer>> nodesIn;
@@ -41,9 +41,9 @@ public class SimulatedCache {
             nodesIn = new ArrayList<ArrayList<Integer>>(size);
             costsIn = new ArrayList<ArrayList<Double>>(size);
             for (int i = 0; i < edgeCount; i++) {
-                Integer l = nodeLeft.pop();
-                Integer r = nodeRight.pop();
-                Double c = cost.pop();
+                Integer l = nodeLeft.get(i);
+                Integer r = nodeRight.get(i);
+                Double c = cost.get(i);
                 while (l >= nodesOut.size() || r >= nodesOut.size()){
                     nodesOut.add(new ArrayList<Integer>());
                     costsOut.add(new ArrayList<Double>());
@@ -62,52 +62,51 @@ public class SimulatedCache {
         }
     }
     protected void matrixConstruction(int edgeCount, LinkedList<Integer> nodeLeft, LinkedList<Integer> nodeRight,LinkedList<Double> cost){
+        adjacencyMatrix = new double[size][size];
         initiateMatrices();
         for (int i = 0; i < edgeCount; i++) {
             Integer l = nodeLeft.pop();
             Integer r = nodeRight.pop();
             Double c = cost.pop();
             adjacencyMatrix[l][r] = c;
+            predMatrix[l][r] = l;
         }
 
     }
     protected void initiateMatrices() {
-        adjacencyMatrix = new Double[size][size];
-        pathCostMatrix = new Double[size][size];
-        witnessMatrix = new int[size][size];
+        pathCostMatrix = new double[size][size];
+        predMatrix = new int[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (i == j) {
                     pathCostMatrix[i][j] = 0.0;
-                    witnessMatrix[i][j] = i;
                     adjacencyMatrix[i][j] = 0.0;
                 } else {
                     pathCostMatrix[i][j] = Double.POSITIVE_INFINITY;
-                    witnessMatrix[i][j] = -1;
                     adjacencyMatrix[i][j] = Double.POSITIVE_INFINITY;
                 }
+                predMatrix[i][j] = j;
             }
         }
     }
     public void prepareToDouble() {
         if (preparedMatrix == null) {
-            preparedMatrix = adjacencyMatrix.clone();
-        } else {
-            preparedMatrix = pathCostMatrix.clone();
+            pathCostMatrix = adjacencyMatrix.clone();
         }
+        preparedMatrix = pathCostMatrix.clone();
     }
     public Double readGraphVal(int row, int col) {
         return preparedMatrix[row][col];
     }
-    public Integer readWitness(int row, int col) { return witnessMatrix[row][col]; }
-    public void writeVal(int row, int col, Double val, Integer witness) {
+    public Integer readPred(int row, int col) { return predMatrix[row][col]; }
+    public void writeVal(int row, int col, Double val, int pred) {
         pathCostMatrix[row][col] = val;
-        witnessMatrix[row][col] = witness;
+        predMatrix[row][col] = pred;
     }
 
-    public void writeValIfLess(int row, int col, Double val, Integer witness) {
+    public synchronized void writeValIfLess(int row, int col, Double val, int pred) {
         if (val < pathCostMatrix[row][col]) {
-            writeVal(row, col, val, witness);
+            writeVal(row, col, val, pred);
         }
     }
 
@@ -132,59 +131,22 @@ public class SimulatedCache {
         System.out.print(" TO: " + to + ": ");
         System.out.print(to);
         int mid = to;
-        while (mid != witnessMatrix[from][mid] && witnessMatrix[from][mid] != -1) {
-            mid = witnessMatrix[from][mid];
+        while (mid != predMatrix[from][mid] && predMatrix[from][mid] != -1) {
+            mid = predMatrix[from][mid];
             System.out.print("<--"+ mid);
         }
         System.out.println();
     }
-    public void printFWPathFrom(int from, int to){
-        System.out.print("PATH FROM: " + from);
-        System.out.print(" TO: " + to + ": ");
-        for (int d : calculatePath(from, to)) {
-            System.out.print(d + "-->");
-        }
-        System.out.println("END");
-    }
-    public void calculateAndPrintAllPaths(){
-        for (int i = 0; i < getSize(); i++){
-            System.out.println("PATHS FROM: " + i);
-            for (int j = 0; j < getSize(); j++){
-                System.out.print("TO:" + j + ": ");
-                for (Integer d : calculatePath(i, j)) {
-                    System.out.print(d + "-->");
-                }
-                System.out.println("END\n");
-            }
-        }
-    }
 
     public int getSize(){
         return size;
-    }
-
-    public List<Integer> calculatePath(int from, int to) {
-        if (from == -1 || to == -1) {
-            return new ArrayList<>();
-        }
-        else if (from == to) {
-            return new ArrayList<>(List.of(to));
-        }
-        else {
-            int witness =  witnessMatrix[from][to];
-            if (witness != from && witness != to) {
-                return Stream.concat(calculatePath(from, witness).stream(), calculatePath(witness, to).stream().skip(1)).toList();
-            } else {
-                return new ArrayList<>(Arrays.asList(from, to));
-            }
-        }
     }
     public ArrayList<ArrayList<Integer>> getNodesIn(){ return nodesIn; }
     public ArrayList<ArrayList<Integer>> getNodesOut(){ return nodesOut; }
     public ArrayList<ArrayList<Double>> getCostsIn(){ return costsIn; }
     public ArrayList<ArrayList<Double>> getCostsOut(){ return costsOut; }
 
-    public Double[][] getAdjacencyMatrix() {
+    public double[][] getAdjacencyMatrix() {
         return adjacencyMatrix;
     }
 }

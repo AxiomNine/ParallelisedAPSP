@@ -1,13 +1,12 @@
 package cannon;
 
-import base.FloydWarshallWorker;
-import metrics.TimerUnit;
+import base.MatMulWorker;
 import simulator.SimulatedCache;
 import utils.Message;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class CannonWorker extends FloydWarshallWorker {
+public class CannonWorker extends MatMulWorker {
 
     public CannonWorker(int i, int j, int l, ArrayBlockingQueue<Boolean> downChannel, ArrayBlockingQueue<Boolean> upChannel, ArrayBlockingQueue<Message> w, ArrayBlockingQueue<Message> n, ArrayBlockingQueue<Message> e, ArrayBlockingQueue<Message> s, SimulatedCache cache, int blockCount){
         super(i, j, l, downChannel, upChannel, w, n, e, s, cache, blockCount);
@@ -15,7 +14,6 @@ public class CannonWorker extends FloydWarshallWorker {
     public void run(){
         try {
             for (int j = 0; j < Math.ceil(Math.log(cache.getSize() - 1)/Math.log(2)); j++) {
-
                 readDown();
                 for (int r = 0; r < getBlockCount(); r++) {
                     for (int i = 0; i < getBlockCount(); i++) {
@@ -32,17 +30,19 @@ public class CannonWorker extends FloydWarshallWorker {
                             } else {
                                 a = Double.POSITIVE_INFINITY;
                             }
+                            int pred;
                             if (multInt< cache.getSize() && minicol < cache.getSize()) {
                                 b = cache.readGraphVal(multInt, minicol);
+                                pred = cache.readPred(multInt, minicol);
                                 timerUnit.addToTimer(row, column, 1);
                             } else {
                                 b = Double.POSITIVE_INFINITY;
+                                pred = -1;
                             }
-                            int witness = ((i + r + c)*getTorusLength()) % (getBlockCount()*getTorusLength()) + offset;
                             timerUnit.addToTimer(row, column, 25);
-                            singleFW(a, b, witness);
+                            singleMM(a, b, pred);
                             if (minirow < cache.getSize() && minicol < cache.getSize()) {
-                                cache.writeValIfLess(minirow, minicol, q, outWitness);
+                                cache.writeValIfLess(minirow, minicol, q, outPred);
                                 timerUnit.addToTimer(row, column, 5);
                             }
                             timerUnit.addToTimer(row, column, 3);
@@ -60,29 +60,29 @@ public class CannonWorker extends FloydWarshallWorker {
     }
 
     @Override
-    protected void singleFW(double xVal, double yVal, int witness) throws InterruptedException{
+    protected void singleMM(double xVal, double yVal, int pred) throws InterruptedException{
         Double runningVal = Double.POSITIVE_INFINITY;
-        int finalWitness = witness;
+        int finalPred = pred;
         timerUnit.addToTimer(row, column, 5);
         for (int i = 0; i < getTorusLength(); i++) {
             Double newVal = xVal + yVal;
             if (newVal < runningVal) {
                 runningVal = newVal;
-                finalWitness = witness;
+                finalPred = pred;
                 timerUnit.addToTimer(row, column, 2);
             }
-            writeNorth(new Message(yVal, -1));
-            writeWest(new Message(xVal, witness));
+            writeNorth(new Message(yVal, pred));
+            writeWest(new Message(xVal, -1));
             timerUnit.addToTimer(row, column, 9);
             Message message = readSouth();
             yVal = message.getVal();
+            pred = message.getPred();
             timerUnit.synchroniseMessage(row, column, true);
             message = readEast();
             xVal = message.getVal();
-            witness = message.getWitness();
             timerUnit.synchroniseMessage(row, column, false);
         }
         q = runningVal;
-        outWitness = finalWitness;
+        outPred = finalPred;
     }
 }

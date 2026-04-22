@@ -1,11 +1,10 @@
 package fox;
 
-import base.FloydWarshallMainCore;
-import metrics.TimerUnit;
+import base.MatMulMainCore;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class FoxMainCore extends FloydWarshallMainCore {
+public class FoxMainCore extends MatMulMainCore {
     public FoxMainCore(String fileAddress, int torusLength) {
         super(fileAddress, torusLength);
 

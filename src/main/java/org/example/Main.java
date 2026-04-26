@@ -13,18 +13,18 @@ public class Main {
         String fileAddress = "C:\\Users\\Daniel\\Documents\\ParallelProject\\ParallelisedAPSP\\src\\main\\resources\\" + args[2];
         MainCore core;
         switch(args[0]) {
-            case "D":
-                core = new DijkstraMainCore(fileAddress, Integer.parseInt(args[1]));
-                new DynamicImplementation(core);
+            default:
+                core = new DijkstraMainCore(fileAddress, Integer.parseInt(args[1]), args[3]);
                 break;
             case "F":
-                core = new FoxMainCore(fileAddress, Integer.parseInt(args[1]));
-                new DynamicImplementation(core);
+                core = new FoxMainCore(fileAddress, Integer.parseInt(args[1]), args[3]);
                 break;
             case "C":
-                core = new CannonMainCore(fileAddress, Integer.parseInt(args[1]));
-                new DynamicImplementation(core);
+                core = new CannonMainCore(fileAddress, Integer.parseInt(args[1]), args[3]);
                 break;
+        }
+        if (args[4].equals("y")){
+            new DynamicImplementation(core);
         }
     }
 }

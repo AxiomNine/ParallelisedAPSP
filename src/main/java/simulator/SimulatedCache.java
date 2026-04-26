@@ -91,9 +91,15 @@ public class SimulatedCache {
     }
     public void prepareToDouble() {
         if (preparedMatrix == null) {
-            pathCostMatrix = adjacencyMatrix.clone();
+            pathCostMatrix = new double[size][size];
+            for (int i = 0; i < size; i++){
+                pathCostMatrix[i] = adjacencyMatrix[i].clone();
+            }
         }
-        preparedMatrix = pathCostMatrix.clone();
+        preparedMatrix = new double[size][size];
+        for (int i = 0; i < size; i++){
+            preparedMatrix[i] = pathCostMatrix[i].clone();
+        }
     }
     public Double readGraphVal(int row, int col) {
         return preparedMatrix[row][col];

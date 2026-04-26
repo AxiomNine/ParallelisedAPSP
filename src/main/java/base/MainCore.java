@@ -21,8 +21,8 @@ public abstract class MainCore<T> {
         coreDownChannels = core.coreDownChannels;
         this.torusLength = core.torusLength;
     }
-    public MainCore(String fileAddress, int torusLength){
-        cache = new SimulatedCache(fileAddress);
+    public MainCore(String fileAddress, int torusLength, String compress){
+        cache = compress.equals("y") ? new CompressedCache(fileAddress) : new SimulatedCache(fileAddress);
         coreThreads = new Thread[torusLength][torusLength];
         coreWorkers = new ParallelWorker[torusLength][torusLength];
         coreDownChannels = new ArrayBlockingQueue[torusLength][torusLength];
@@ -57,5 +57,7 @@ public abstract class MainCore<T> {
     }
 
     public Double getCurrentCost(int from, int to) {return cache.getCurrentCost(from, to); }
+
+    public void setCost(int from, int to, double val) {cache.writeVal(from, to, val, -1); }
 }
 

@@ -5,8 +5,8 @@ import base.MatMulMainCore;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class FoxMainCore extends MatMulMainCore {
-    public FoxMainCore(String fileAddress, int torusLength) {
-        super(fileAddress, torusLength);
+    public FoxMainCore(String fileAddress, int torusLength, String compress) {
+        super(fileAddress, torusLength, compress);
 
         int blockCount = Math.ceilDiv(cache.getSize(), torusLength);
         for (int i = 0; i < torusLength; i++) {

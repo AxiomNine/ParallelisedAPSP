@@ -16,8 +16,8 @@ public class DijkstraMainCore extends MainCore<Integer> {
         pausedQueue = new ArrayList<DijkstraWorker>();
         pausedQueueSync = Collections.synchronizedList(pausedQueue);
     }
-    public DijkstraMainCore(String fileAddress, int torusLength) {
-        super(fileAddress, torusLength);
+    public DijkstraMainCore(String fileAddress, int torusLength, String compress) {
+        super(fileAddress, torusLength, compress);
         pausedQueue = new ArrayList<DijkstraWorker>();
         pausedQueueSync = Collections.synchronizedList(pausedQueue);
         run();
@@ -69,12 +69,6 @@ public class DijkstraMainCore extends MainCore<Integer> {
                     for (int i = cache.getSize(); i < getTorusLength()*getTorusLength(); i++) {
                         coreThreads[i / getTorusLength()][i % getTorusLength()].interrupt();
                     }
-                }
-            }
-
-            for (int i = 0; i < cache.getSize(); i++) {
-                for (int j = 0; j < cache.getSize(); j++) {
-                    cache.printDijkstraPathFrom(i, j);
                 }
             }
             getElapsedTimeOfCores();

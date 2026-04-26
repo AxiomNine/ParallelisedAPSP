@@ -5,8 +5,8 @@ import base.MatMulMainCore;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class CannonMainCore extends MatMulMainCore {
-    public CannonMainCore(String fileAddress, int torusLength){
-        super(fileAddress, torusLength);
+    public CannonMainCore(String fileAddress, int torusLength, String compress){
+        super(fileAddress, torusLength, compress);
         int blockCount = Math.ceilDiv(cache.getSize(), torusLength);
         for (int i = 0; i < torusLength; i++) {
             for (int j = 0; j < torusLength; j++) {

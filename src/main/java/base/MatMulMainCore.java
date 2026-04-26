@@ -11,8 +11,8 @@ public abstract class MatMulMainCore extends MainCore<Boolean> {
     protected final ArrayBlockingQueue<Boolean>[][] coreUpChannels;
     protected final int blockCount;
 
-    public MatMulMainCore(String fileAddress, int torusLength){
-        super(fileAddress, torusLength);
+    public MatMulMainCore(String fileAddress, int torusLength, String compress){
+        super(fileAddress, torusLength, compress);
         hchannels = new ArrayBlockingQueue[torusLength][torusLength];
         vchannels = new ArrayBlockingQueue[torusLength][torusLength];
         coreUpChannels = new ArrayBlockingQueue[torusLength][torusLength];
@@ -51,12 +51,6 @@ public abstract class MatMulMainCore extends MainCore<Boolean> {
                 coreThreads[a][b].interrupt();
             }
         }
-        for (int i = 0; i < cache.getSize(); i++) {
-            for (int j = 0; j < cache.getSize(); j++) {
-                cache.printDijkstraPathFrom(i, j);
-            }
-        }
-        getElapsedTimeOfCores();
 
     }
 }

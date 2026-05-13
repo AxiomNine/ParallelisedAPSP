@@ -51,6 +51,6 @@ public abstract class MatMulMainCore extends MainCore<Boolean> {
                 coreThreads[a][b].interrupt();
             }
         }
-
+        getElapsedTimeOfCores();
     }
 }

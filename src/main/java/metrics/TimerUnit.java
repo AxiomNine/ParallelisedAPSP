@@ -74,7 +74,17 @@ public class TimerUnit {
         synchronized (lock) {
             double[] row = new double[torusSize];
             Arrays.fill(row, maxTime);
-            Arrays.fill(timers, row.clone());
+            for (int i = 0; i < timers.length; i++){
+                timers[i] = row.clone();
+                uncommittedTimes[i] = row.clone();
+            }
+        }
+    }
+
+    public void synchroniseZero(){
+        synchronized (lock) {
+            maxTime = 0;
+            synchroniseArray();
         }
     }
     public double returnMaxTime() {

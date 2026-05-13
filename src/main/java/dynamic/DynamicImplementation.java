@@ -17,14 +17,14 @@ public class DynamicImplementation {
         }
     }
     private MainCore core;
-    private final ArrayList<ArrayList<Double>>  costsIn;
+    private final ArrayList<ArrayList<Double>> costsIn;
     private final ArrayList<ArrayList<Double>> costsOut;
     private final ArrayList<ArrayList<Integer>> nodesIn;
     private final ArrayList<ArrayList<Integer>> nodesOut;
 
     private int totalEdgeCount;
 
-    public DynamicImplementation(MainCore core) {
+    public DynamicImplementation(MainCore core, int changes, String typeOfChange) {
         this.core = core;
         nodesIn = core.getNodesIn();
         nodesOut = core.getNodesOut();
@@ -34,7 +34,7 @@ public class DynamicImplementation {
         for (ArrayList<Integer> node : nodesOut){
             totalEdgeCount += node.size();
         }
-        makeGraphDynamic();
+        makeGraphDynamic(changes, typeOfChange);
     }
 
     public void removeEdge(int u, int v){
@@ -140,37 +140,78 @@ public class DynamicImplementation {
         return core.getCurrentCost(u, v);
     }
 
-    public void makeGraphDynamic() {
+    private Edge selectRandomEdge(){
+        Random random = new Random();
+        int edgeIndex = random.nextInt(0, totalEdgeCount);
+        Iterator<ArrayList<Integer>> iterator = nodesOut.iterator();
+        ArrayList<Integer> node = iterator.next();
+        int v = 0;
+        while (edgeIndex >= node.size()){
+            edgeIndex -= node.size();
+            node = iterator.next();
+            v++;
+        }
+        int w = node.get(edgeIndex);
+        return new Edge(v, w);
+    }
+    public void makeGraphDynamic(int changes, String typeOfChange) {
         Random random = new Random();
         HashSet<Integer> sources = new HashSet<Integer>();
         HashSet<Integer> sinks = new HashSet<Integer>();
-        for (int i = 0; i < 1; i++) {
-            int edgeIndex = random.nextInt(0, totalEdgeCount);
-            Iterator<ArrayList<Integer>> iterator = nodesOut.iterator();
-            ArrayList<Integer> node = iterator.next();
-            int v = 0;
-            while (edgeIndex >= node.size()){
-                edgeIndex -= node.size();
-                node = iterator.next();
-                v++;
+        HashMap<Edge, Double> deadEdges = new HashMap<Edge, Double>();
+        int edges = totalEdgeCount;
+        if (typeOfChange.equals("insert")){
+            for (int i = 0; i < Math.floor(edges * 0.05); i++){
+                Edge e = selectRandomEdge();
+                deadEdges.put(e, core.getAdjacencyMatrix()[e.v][e.w]);
+                removeEdge(e.v, e.w);
+                sinks.addAll(getAffectedFromDelete(nodesIn, nodesOut, e.w, e.v, true));
+                sources.addAll(getAffectedFromDelete(nodesOut, nodesIn, e.v, e.w, false));
+                totalEdgeCount -= 1;
             }
-            int w = node.get(edgeIndex);
-            v = 6;
-            w = 2;
-            removeEdge(v, w);
-            sinks = getAffectedFromDelete(nodesIn, nodesOut, w, v, true);
-            sources = getAffectedFromDelete(nodesOut, nodesIn, v, w, false);
             core = new DijkstraDynamicMainCore(core, sources, sinks);
-            v = random.nextInt(0, core.getAdjacencyMatrix().length);
-            w = random.nextInt(0, core.getAdjacencyMatrix().length);
-            double c = random.nextDouble(0, 1);
-            v = 3;
-            w = 2;
-            c = 1;
-            insertEdge(v, w, c);
-            sinks = getAffectedFromInsert(nodesOut, w, v, true);
-            sources = getAffectedFromInsert(nodesIn, v, w, false);
-            core = new DijkstraDynamicMainCore(core, sources, sinks);
+            sources.clear();
+            sinks.clear();
         }
+        Iterator<Edge> edgeIterator = deadEdges.keySet().iterator();
+        for (int i = 0; i < changes; i++) {
+            if (typeOfChange.equals("delete") || typeOfChange.equals("reweight")) {
+                int edgeIndex = random.nextInt(0, totalEdgeCount);
+                Iterator<ArrayList<Integer>> iterator = nodesOut.iterator();
+                ArrayList<Integer> node = iterator.next();
+                int v = 0;
+                while (edgeIndex >= node.size()){
+                    edgeIndex -= node.size();
+                    node = iterator.next();
+                    v++;
+                }
+                int w = node.get(edgeIndex);
+                double c = costsOut.get(v).get(edgeIndex);
+                removeEdge(v, w);
+                sinks.addAll(getAffectedFromDelete(nodesIn, nodesOut, w, v, true));
+                sources.addAll(getAffectedFromDelete(nodesOut, nodesIn, v, w, false));
+                if (typeOfChange.equals("reweight")) {
+                    c += random.nextGaussian(c, c/3);
+                    insertEdge(v, w, c);
+                    sinks.addAll(getAffectedFromInsert(nodesOut, w, v, true));
+                    sources.addAll(getAffectedFromInsert(nodesIn, v, w, false));
+                } else {
+                    totalEdgeCount -= 1;
+                }
+            } else if (typeOfChange.equals("insert")){
+                Edge edge = edgeIterator.next();
+                int v = edge.v;
+                int w = edge.w;
+                double c = deadEdges.get(edge);
+                edgeIterator.remove();
+                insertEdge(v, w, c);
+                sinks.addAll(getAffectedFromInsert(nodesOut, w, v, true));
+                sources.addAll(getAffectedFromInsert(nodesIn, v, w, false));
+                totalEdgeCount += 1;
+            } else {
+                throw new IllegalArgumentException("For the dynamic parameter, please select either \"insert\", \"delete\" or \"reweight\". Thank you.");
+            }
+        }
+        core = new DijkstraDynamicMainCore(core, sources, sinks);
     }
 }

@@ -50,16 +50,17 @@ public class DijkstraWorker extends ParallelWorker<Integer> {
         while (!pq.isEmpty()) {
             timerUnit.addToTimer(row, column, 0.5);
             PathElement uElement = pq.poll();
-            timerUnit.addToTimer(row, column, 10);
+            timerUnit.addToTimer(row, column, Math.log(1 + pq.size())/Math.log(2));
             int u = uElement.getHead();
             timerUnit.addToTimer(row, column, 0.5);
             HashMap<Integer, Double> neighbours = cache.getNeighbours(u);
-            timerUnit.addToTimer(row, column, 100);
+            timerUnit.addToTimer(row, column, neighbours.size() + 0.5);
             for (Integer v : neighbours.keySet()) {
+                timerUnit.addToTimer(row, column, 0.5);
                 double alt = uElement.getLength() + neighbours.get(v);
-                timerUnit.addToTimer(row, column, 4);
+                timerUnit.addToTimer(row, column, 3);
                 if (alt < cache.getCurrentCost(origin, v)) {
-                    timerUnit.addToTimer(row, column, 5);
+                    timerUnit.addToTimer(row, column, 1);
                     PathElement vElement = new PathElement(v, alt);
                     Iterator<PathElement> i = pq.iterator();
                     boolean changed = false;
@@ -72,7 +73,7 @@ public class DijkstraWorker extends ParallelWorker<Integer> {
                     }
                     pq.add(vElement);
                     cache.writeVal(origin, v, vElement.getLength(), u);
-                    timerUnit.addToTimer(row, column, 14);
+                    timerUnit.addToTimer(row, column, 11);
                 }
             }
         }

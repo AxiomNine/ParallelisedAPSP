@@ -2,6 +2,7 @@ package base;
 
 import compressor.CompressedCache;
 import metrics.TimerUnit;
+import org.example.Main;
 import simulator.SimulatedCache;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public abstract class MainCore<T> {
         this.torusLength = core.torusLength;
     }
     public MainCore(String fileAddress, int torusLength, String compress){
-        cache = compress.equals("y") ? new CompressedCache(fileAddress) : new SimulatedCache(fileAddress);
+        cache = compress.equals("Y") ? new CompressedCache(fileAddress) : new SimulatedCache(fileAddress);
         coreThreads = new Thread[torusLength][torusLength];
         coreWorkers = new ParallelWorker[torusLength][torusLength];
         coreDownChannels = new ArrayBlockingQueue[torusLength][torusLength];

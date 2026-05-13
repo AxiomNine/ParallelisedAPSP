@@ -10,7 +10,7 @@ import fox.FoxMainCore;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        String fileAddress = "C:\\Users\\Daniel\\Documents\\ParallelProject\\ParallelisedAPSP\\src\\main\\resources\\" + args[2];
+        String fileAddress = "C:\\Users\\Daniel\\Documents\\ParallelProject\\" + args[2];
         MainCore core;
         switch(args[0]) {
             default:
@@ -23,8 +23,8 @@ public class Main {
                 core = new CannonMainCore(fileAddress, Integer.parseInt(args[1]), args[3]);
                 break;
         }
-        if (args[4].equals("y")){
-            new DynamicImplementation(core);
+        if (!args[4].equals("N")){
+            new DynamicImplementation(core, Integer.valueOf(args[4]), args[5]);
         }
     }
 }

@@ -3,6 +3,7 @@ package dynamic;
 import base.MainCore;
 import dijkstra.DijkstraMainCore;
 import dijkstra.DijkstraWorker;
+import metrics.TimerUnit;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,9 +15,9 @@ public class DijkstraDynamicMainCore extends DijkstraMainCore {
         run(sources, sinks);
     }
 
-
     private void run(HashSet<Integer> sources, HashSet<Integer> sinks) {
         try {
+            TimerUnit.getTimerUnit(getTorusLength()).synchroniseZero();
             for (int i = 0; i < getTorusLength(); i++) {
                 for (int j = 0; j < getTorusLength(); j++) {
                     this.coreDownChannels[i][j] = new ArrayBlockingQueue<Integer>(1);
@@ -71,6 +72,8 @@ public class DijkstraDynamicMainCore extends DijkstraMainCore {
                     }
                 }
             }
+
+            getElapsedTimeOfCores();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

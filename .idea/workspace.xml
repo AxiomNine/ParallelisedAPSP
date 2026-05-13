@@ -4,18 +4,50 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def61798-bdb8-48a9-8da2-24e0c40bda13" name="Changes" comment="Update the witness matrix so it exclusively stores predecessors">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicMainCore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicWorker.java" afterDir="false" />
+    <list default="true" id="def61798-bdb8-48a9-8da2-24e0c40bda13" name="Changes" comment="Allow the DynamicImplementation to terminate properly and correctly">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/barrington.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/boxworth.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/burwell.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/chatteris.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/comberton.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/great_gransden.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/haddenham.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/histon.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/huntingdon.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/march.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/orwell.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/sawston.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/soham.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/st_ives.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/st_neots.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/MainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/MainCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/base/MatMulMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/base/MatMulMainCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cannon/CannonMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cannon/CannonMainCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraMainCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cannon/CannonWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cannon/CannonWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/compressor/CompressedCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/compressor/CompressedCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dijkstra/DijkstraWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicMainCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dynamic/DijkstraDynamicWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dynamic/DynamicImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dynamic/DynamicImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fox/FoxMainCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fox/FoxMainCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fox/FoxWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fox/FoxWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/metrics/TimerUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/metrics/TimerUnit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulator/SimulatedCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulator/SimulatedCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/broughton.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/calNetworkEdges.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/calRoadNetwork.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/cambourne.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cambourne.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/cambridge.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cambridge.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/castle_combe.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/chipping_campden.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/cottenham.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ely.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ely.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/keswick.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lavenham.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/liverpool.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/msg_network_chars.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/norwich.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/nottingham.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +64,20 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;AxiomNine&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="e38e0083-90d9-4a8d-b2d8-1d8ff70b6d11" />
+        <option name="url" value="https://github.com/AxiomNine/parallel-simulation" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -47,7 +93,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Alt.executor": "Debug",
-    "Application.Main.executor": "Run",
+    "Application.Main.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -79,7 +125,7 @@
     <configuration name="Main" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="ParallelisedAPSP" />
-      <option name="PROGRAM_PARAMETERS" value="F 2 basic_graph.txt" />
+      <option name="PROGRAM_PARAMETERS" value="D 64 calNetworkEdges.txt Y N reweight" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -158,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776860416318</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Allow the DynamicImplementation to terminate properly and correctly">
+      <option name="closed" value="true" />
+      <created>1777225612116</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1777225612116</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -178,7 +232,8 @@
     <MESSAGE value="Implement three fully completed algorithms for solving APSP in parallel" />
     <MESSAGE value="Add graph compression capabilities, more sample graphs and move computation logic from main core to parallel cores." />
     <MESSAGE value="Update the witness matrix so it exclusively stores predecessors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update the witness matrix so it exclusively stores predecessors" />
+    <MESSAGE value="Allow the DynamicImplementation to terminate properly and correctly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Allow the DynamicImplementation to terminate properly and correctly" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -201,6 +256,21 @@
           <url>file://$PROJECT_DIR$/src/main/java/compressor/GraphCompressor.java</url>
           <line>118</line>
           <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/dynamic/DynamicImplementation.java</url>
+          <line>171</line>
+          <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/base/MainCore.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/simulator/SimulatedCache.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="89" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

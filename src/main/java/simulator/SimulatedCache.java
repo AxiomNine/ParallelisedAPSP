@@ -132,18 +132,6 @@ public class SimulatedCache {
         return pathCostMatrix[from][to];
     }
 
-    public void printDijkstraPathFrom(int from, int to) {
-        System.out.print("PATH FROM: " + from);
-        System.out.print(" TO: " + to + ": ");
-        System.out.print(to);
-        int mid = to;
-        while (mid != predMatrix[from][mid] && predMatrix[from][mid] != -1) {
-            mid = predMatrix[from][mid];
-            System.out.print("<--"+ mid);
-        }
-        System.out.println();
-    }
-
     public int getSize(){
         return size;
     }

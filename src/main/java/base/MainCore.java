@@ -2,7 +2,6 @@ package base;
 
 import compressor.CompressedCache;
 import metrics.TimerUnit;
-import org.example.Main;
 import simulator.SimulatedCache;
 
 import java.util.ArrayList;

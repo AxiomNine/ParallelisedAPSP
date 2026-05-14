@@ -1,4 +1,4 @@
-package org.example;
+package origin;
 
 import base.MainCore;
 import cannon.CannonMainCore;
@@ -6,11 +6,10 @@ import dijkstra.DijkstraMainCore;
 import dynamic.DynamicImplementation;
 import fox.FoxMainCore;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        String fileAddress = "C:\\Users\\Daniel\\Documents\\ParallelProject\\" + args[2];
+
+        String fileAddress = Main.class.getResource("/" + args[2]).getPath();
         MainCore core;
         switch(args[0]) {
             default:
